@@ -21,7 +21,6 @@ import { QrCard } from '@/components/QrCard';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import LoadingDots from '@/components/ui/loadingdots';
-import downloadQrCode from '@/utils/downloadQrCode';
 import va from '@vercel/analytics';
 import { PromptSuggestion } from '@/components/PromptSuggestion';
 import { useRouter } from 'next/navigation';
@@ -242,8 +241,7 @@ const Body = ({
                 {response && (
                   <div className="flex justify-center gap-5 mt-4">
                     <Button
-                      onClick={() =>
-                        downloadQrCode(response.image_url, 'qrCode')
+                      onClick={() =>{}
                       }
                     >
                       Download
