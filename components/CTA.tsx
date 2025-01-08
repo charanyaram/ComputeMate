@@ -6,14 +6,15 @@ const CTA = () => (
           className="text-gray-800 text-3xl font-semibold sm:text-4xl"
           id="oss"
         >
-          QrGPT is Proudly Open Source
+          ComputeMate is Proudly Open Source
         </h2>
         <p className="mt-3 text-gray-600">
-          Our source code is available on GitHub.
+          Our source code is available on GitHub to encourage collaboration and improvement.
         </p>
         <a
-          href="https://github.com/Nutlope/qrGPT"
+          href="https://github.com/charanyaram/ComputeMate"  // Replace with your actual GitHub repository URL
           className="mt-4 inline-flex justify-center items-center gap-2 font-medium text-sm text-white bg-gray-800 hover:bg-gray-600 active:bg-gray-900 max-w-[200px] py-2.5 px-4 text-center rounded-lg duration-150"
+          target="_blank"
         >
           <svg
             aria-hidden="true"
