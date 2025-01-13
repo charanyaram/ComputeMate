@@ -38,7 +38,7 @@ const FormSchema = {
 
 const Body = () => {
   const [questionType, setQuestionType] = useState('computing');
-  const [message, setMessage] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tellus massa, eleifend quis sodales eu, maximus a leo. Quisque vitae facilisis enim. Donec purus sapien, vehicula vitae purus quis, tincidunt malesuada orci. Curabitur sollicitudin fringilla congue. Integer dictum a arcu accumsan egestas. Etiam ultrices posuere purus id fermentum. Vestibulum id placerat nibh. Fusce molestie sapien vel fringilla lacinia.');
+  const [message, setMessage] = useState('');
   const { control, handleSubmit, watch, setValue } = useForm({
     defaultValues: FormSchema,
   });
@@ -127,7 +127,7 @@ const Body = () => {
 
                 <div>
                   <label htmlFor="unitName" className="block font-medium">
-                    University
+                    Unit Name
                   </label>
                   <Controller
                     name="unitDetails.unitName"
@@ -148,9 +148,9 @@ const Body = () => {
               Submit
             </Button>
             {message && (
-                  <Alert variant="default">
+                  <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Message</AlertTitle>
+                    <AlertTitle>Error</AlertTitle>
                     <AlertDescription>{message}</AlertDescription>
                   </Alert>
                 )}

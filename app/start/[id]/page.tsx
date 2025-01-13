@@ -65,11 +65,6 @@ export default async function Results({
   }
   return (
     <Body
-      prompt={data.prompt}
-      imageUrl={data.image}
-      redirectUrl={data.website_url}
-      modelLatency={Number(data.model_latency)}
-      id={params.id}
     />
   );
 }
