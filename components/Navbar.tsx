@@ -11,9 +11,9 @@ const Navbar = () => {
 
   const navigation = [
     { title: 'Homepage', path: '/' },
-    { title: 'Features', path: '#features' },
-    { title: 'About', path: '#about' },
-    { title: 'Contact', path: '#contact' },
+    { title: 'Features', path: '/features' },
+    { title: 'About', path: '/about' },
+    { title: 'Contact', path: '/contact' },
   ];
 
   const pathname = usePathname();

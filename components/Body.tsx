@@ -1,50 +1,35 @@
 'use client';
-
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { useForm, Controller } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useCallback, useEffect, useState } from 'react';
-import { QrGenerateRequest, QrGenerateResponse } from '@/utils/service';
-import { QrCard } from '@/components/QrCard';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import LoadingDots from '@/components/ui/loadingdots';
-import va from '@vercel/analytics';
-import { PromptSuggestion } from '@/components/PromptSuggestion';
-import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'react-hot-toast';
-import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 const FormSchema = {
   computingQuestion: '',
   unitDetails: {
-    unitCode: '',
-    unitName: '',
-    difficultyLevel: '', // One of ['Easy', 'Medium', 'Hard']
-    interestLevel: '', // One of ['Low', 'Medium', 'High']
+    unitCode1: '',
+    university1: '',
+    unitCode2: '',
+    university2: '',
   },
 };
 
 const Body = () => {
   const [questionType, setQuestionType] = useState('computing');
-  const [message, setMessage] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tellus massa, eleifend quis sodales eu, maximus a leo. Quisque vitae facilisis enim. Donec purus sapien, vehicula vitae purus quis, tincidunt malesuada orci. Curabitur sollicitudin fringilla congue. Integer dictum a arcu accumsan egestas. Etiam ultrices posuere purus id fermentum. Vestibulum id placerat nibh. Fusce molestie sapien vel fringilla lacinia.');
-  const { control, handleSubmit, watch, setValue } = useForm({
+  const [message, setMessage] = useState('');
+  const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: FormSchema,
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    if (questionType === 'computing') {
+      setMessage('Computing question submitted');
+    } else {
+      setMessage('Unit details submitted');
+    }
   };
 
   return (
@@ -95,6 +80,7 @@ const Body = () => {
                 <Controller
                   name="computingQuestion"
                   control={control}
+                  rules={{ required: 'This field is required' }}
                   render={({ field }) => (
                     <Textarea
                       id="computingQuestion"
@@ -103,44 +89,107 @@ const Body = () => {
                     />
                   )}
                 />
+                {errors.computingQuestion && (
+                  <p className="text-red-500 text-sm">
+                    {errors.computingQuestion.message}
+                  </p>
+                )}
               </div>
             )}
 
             {questionType === 'unit' && (
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="unitCode" className="block font-medium">
-                    Unit Code
+                  <label htmlFor="unitCode1" className="block font-medium">
+                    Unit Code 1
                   </label>
                   <Controller
-                    name="unitDetails.unitCode"
+                    name="unitDetails.unitCode1"
                     control={control}
+                    rules={{ required: 'Unit Code 1 is required' }}
                     render={({ field }) => (
                       <Input
-                        id="unitCode"
+                        id="unitCode1"
                         placeholder="e.g., COMP1234"
                         {...field}
                       />
                     )}
                   />
+                  {errors.unitDetails?.unitCode1 && (
+                    <p className="text-red-500 text-sm">
+                      {errors.unitDetails.unitCode1.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label htmlFor="unitName" className="block font-medium">
-                    University
+                  <label htmlFor="university1" className="block font-medium">
+                    University 1
                   </label>
                   <Controller
-                    name="unitDetails.unitName"
+                    name="unitDetails.university1"
                     control={control}
+                    rules={{ required: 'University 1 is required' }}
                     render={({ field }) => (
                       <Input
-                        id="unitName"
-                        placeholder="e.g., Introduction to Computing"
+                        id="university1"
+                        placeholder="e.g., Macquarie University"
                         {...field}
                       />
                     )}
                   />
+                  {errors.unitDetails?.university1 && (
+                    <p className="text-red-500 text-sm">
+                      {errors.unitDetails.university1.message}
+                    </p>
+                  )}
                 </div>
+                <div>
+                  <label htmlFor="unitCode2" className="block font-medium">
+                    Unit Code 2
+                  </label>
+                  <Controller
+                    name="unitDetails.unitCode2"
+                    control={control}
+                    rules={{ required: 'Unit Code 2 is required' }}
+                    render={({ field }) => (
+                      <Input
+                        id="unitCode2"
+                        placeholder="e.g., COMP2234"
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors.unitDetails?.unitCode2 && (
+                    <p className="text-red-500 text-sm">
+                      {errors.unitDetails.unitCode2.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="university2" className="block font-medium">
+                    University 2
+                  </label>
+                  <Controller
+                    name="unitDetails.university2"
+                    control={control}
+                    rules={{ required: 'University 2 is required' }}
+                    render={({ field }) => (
+                      <Input
+                        id="university2"
+                        placeholder="e.g., Macquarie University"
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors.unitDetails?.university2 && (
+                    <p className="text-red-500 text-sm">
+                      {errors.unitDetails.university2.message}
+                    </p>
+                  )}
+                </div>
+                {/* Add similar validation for other fields */}
               </div>
             )}
 
@@ -148,54 +197,17 @@ const Body = () => {
               Submit
             </Button>
             {message && (
-                  <Alert variant="default">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Message</AlertTitle>
-                    <AlertDescription>{message}</AlertDescription>
-                  </Alert>
-                )}
+              <Alert variant="default">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Message</AlertTitle>
+                <AlertDescription>{message}</AlertDescription>
+              </Alert>
+            )}
           </form>
         </div>
-        <div className="col-span-1">
-          {/* {submittedURL && (
-            <>
-              <h1 className="text-3xl font-bold sm:mb-5 mb-5 mt-5 sm:mt-0 sm:text-center text-left">
-                Your QR Code
-              </h1>
-              <div>
-                <div className="flex flex-col justify-center relative h-auto items-center">
-                  {response ? (
-                    <QrCard
-                      imageURL={response.image_url}
-                      time={(response.model_latency_ms / 1000).toFixed(2)}
-                    />
-                  ) : (
-                    <div className="relative flex flex-col justify-center items-center gap-y-2 w-[510px] border border-gray-300 rounded shadow group p-2 mx-auto animate-pulse bg-gray-400 aspect-square max-w-full" />
-                  )}
-                </div>
-                {response && (
-                  <div className="flex justify-center gap-5 mt-4">
-                    <Button onClick={() => {}}>Download</Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          `https://qrgpt.io/start/${id || ''}`,
-                        );
-                        toast.success('Link copied to clipboard');
-                      }}
-                    >
-                      ✂️ Share
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </>
-          )} */}
-          <div className="relative flex flex-col justify-center items-center gap-y-2 w-[510px] border border-gray-300 rounded shadow group p-2 mx-auto animate-pulse bg-gray-400 aspect-square max-w-full" />
-        </div>
+
+        <div className="relative flex flex-col justify-center items-center gap-y-2 w-[510px] border border-gray-300 rounded shadow group p-2 mx-auto animate-pulse bg-gray-400 aspect-square max-w-full" />
       </div>
-      <Toaster />
     </div>
   );
 };
